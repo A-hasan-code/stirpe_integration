@@ -16,11 +16,9 @@ const Headers = () => {
           </NavLink>
           <NavLink to="/cart" className="text-decoration-none text-light mx-2">
             <div id="ex4">
-              <span
-                className="p1 fa-stack fa-2x has-badge"
-                data-count={carts.length}
-              >
-                <BsBag size={24} />
+              <span className="large-count">
+                {carts.length}
+                <BsBag size={24} data-count={carts.length} />
               </span>
             </div>
           </NavLink>

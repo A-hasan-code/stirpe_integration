@@ -1,54 +1,47 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     carts: []
-}
+};
 
-// card slice
+// Cart slice
 const cartSlice = createSlice({
-    name: "cartslice",
+    name: "cartSlice",
     initialState,
     reducers: {
-
-        // add to cart
+        // Add to cart
         addToCart: (state, action) => {
+            const itemIndex = state.carts.findIndex(item => item.id === action.payload.id);
 
-            const IteamIndex = state.carts.findIndex((iteam) => iteam.id === action.payload.id);
-
-            if (IteamIndex >= 0) {
-                state.carts[IteamIndex].qnty += 1
+            if (itemIndex >= 0) {
+                state.carts[itemIndex].qnty += 1;
             } else {
-                const temp = { ...action.payload, qnty: 1 }
-                state.carts = [...state.carts, temp]
-
+                const newItem = { ...action.payload, qnty: 1 };
+                state.carts.push(newItem); // Using push for better readability
             }
         },
 
-        // remove perticular iteams
-        removeToCart: (state, action) => {
-            const data = state.carts.filter((ele) => ele.id !== action.payload);
-            state.carts = data
+        // Remove particular items
+        removeFromCart: (state, action) => {
+            state.carts = state.carts.filter(item => item.id !== action.payload);
         },
 
-        // remove single iteams
-        removeSingleIteams: (state, action) => {
-            const IteamIndex_dec = state.carts.findIndex((iteam) => iteam.id === action.payload.id);
+        // Remove a single item
+        removeSingleItem: (state, action) => {
+            const itemIndex = state.carts.findIndex(item => item.id === action.payload.id);
 
-            if (state.carts[IteamIndex_dec].qnty >= 1) {
-                state.carts[IteamIndex_dec].qnty -= 1
+            if (itemIndex >= 0 && state.carts[itemIndex].qnty > 0) {
+                state.carts[itemIndex].qnty -= 1;
             }
-
         },
 
-        // clear cart
-        emptycartIteam: (state, action) => {
-            state.carts = []
+        // Clear cart
+        emptyCart: (state) => {
+            state.carts = [];
         }
     }
 });
 
-export const { addToCart, removeToCart, removeSingleIteams, emptycartIteam } = cartSlice.actions;
-
+// Exporting actions and reducer
+export const { addToCart, removeFromCart, removeSingleItem, emptyCart } = cartSlice.actions;
 export default cartSlice.reducer;
-
-
